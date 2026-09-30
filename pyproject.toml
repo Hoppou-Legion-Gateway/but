@@ -1,0 +1,36 @@
+[project]
+name = "but"
+version = "0.1.0"
+description = "A useful cli for Blender"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [{ name = "HoppouDev", email = "me@hoppou.dev" }]
+dependencies = [
+  "bpy>=5.2.2",
+  "typer>=0.27.2",
+]
+
+[project.scripts]
+but = "but:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=9.1.1",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "strict"
+
+[tool.ruff]
+line-length = 80
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "tab"
+line-ending = "lf"
