@@ -36,9 +36,23 @@ jobs:
         with:
           enable-cache: false
 
+      - name: Resolve release version
+        id: release
+        env:
+          CURRENT: ${{ steps.version.outputs.current-version }}
+          NEXT: ${{ steps.version.outputs.version }}
+        run: |
+          if [ "$CURRENT" = "0.0.0" ]; then
+            # No release tags yet: release the version in pyproject.toml as-is.
+            VERSION="$(uv version --short)"
+          else
+            VERSION="$NEXT"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Bump version in pyproject.toml
         env:
-          VERSION: ${{ steps.version.outputs.version }}
+          VERSION: ${{ steps.release.outputs.version }}
         run: uv version --no-sync "$VERSION"
 
       - name: Build
@@ -47,24 +61,27 @@ jobs:
       - name: Commit and push version bump
         id: bump
         env:
-          VERSION: ${{ steps.version.outputs.version }}
+          VERSION: ${{ steps.release.outputs.version }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add pyproject.toml uv.lock
-          git commit -m "chore: release $VERSION"
-          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${GITHUB_REF_NAME}"
+          # The first release keeps the existing version: nothing to commit.
+          if ! git diff --quiet -- pyproject.toml uv.lock; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pyproject.toml uv.lock
+            git commit -m "chore: release v$VERSION"
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${GITHUB_REF_NAME}"
+          fi
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Create tag & GitHub release
         env:
-          VERSION: ${{ steps.version.outputs.version }}
+          TAG: v${{ steps.release.outputs.version }}
           SHA: ${{ steps.bump.outputs.sha }}
           GH_TOKEN: ${{ github.token }}
         run: >
-          gh release create "$VERSION" dist/*
+          gh release create "$TAG" dist/*
           --repo "$GITHUB_REPOSITORY"
           --target "$SHA"
-          --title "$VERSION"
+          --title "$TAG"
           --generate-notes
