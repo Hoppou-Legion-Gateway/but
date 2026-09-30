@@ -31,6 +31,17 @@ uv build
 uv publish
 ```
 
+## Releasing
+
+Bump the version and push to `main`. The release workflow publishes
+`v<version>` when that tag doesn't exist yet; other pushes skip releasing.
+
+```sh
+uv version --bump patch   # or minor / major
+git commit -am "chore: release v$(uv version --short)"
+git push
+```
+
 ## License
 
 This project is licensed under the MIT license. Refer to [LICENSE.md](LICENSE.md)

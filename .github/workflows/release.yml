@@ -1,5 +1,8 @@
 name: Build and release
 
+# Releases the version in pyproject.toml when it has no `v<version>` tag yet.
+# Bump it manually, e.g. `uv version --bump minor`, and push to main.
+
 on:
   push:
     branches:
@@ -16,72 +19,44 @@ jobs:
     name: Build and release
     runs-on: ubuntu-latest
     permissions:
-      contents: write # push the version bump commit, create the tag and release
+      contents: write # create the tag and release
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Get next version
-        uses: reecetech/version-increment@28d33de033e97a304f77238d6a5db26039ca15d6 # 2026.8.4
-        id: version
-        with:
-          scheme: semver
-          increment: patch
-          use_api: true
-
       - name: Set up uv
         uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           enable-cache: false
 
-      - name: Resolve release version
-        id: release
+      - name: Check whether version is already released
+        id: version
         env:
-          CURRENT: ${{ steps.version.outputs.current-version }}
-          NEXT: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "$CURRENT" = "0.0.0" ]; then
-            # No release tags yet: release the version in pyproject.toml as-is.
-            VERSION="$(uv version --short)"
+          TAG="v$(uv version --short)"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --silent 2>/dev/null; then
+            echo "::notice::$TAG is already released; bump the version in pyproject.toml to release again."
+            echo "release=false" >> "$GITHUB_OUTPUT"
           else
-            VERSION="$NEXT"
+            echo "release=true" >> "$GITHUB_OUTPUT"
           fi
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Bump version in pyproject.toml
-        env:
-          VERSION: ${{ steps.release.outputs.version }}
-        run: uv version --no-sync "$VERSION"
 
       - name: Build
+        if: steps.version.outputs.release == 'true'
         run: uv build
 
-      - name: Commit and push version bump
-        id: bump
-        env:
-          VERSION: ${{ steps.release.outputs.version }}
-          GITHUB_TOKEN: ${{ github.token }}
-        run: |
-          # The first release keeps the existing version: nothing to commit.
-          if ! git diff --quiet -- pyproject.toml uv.lock; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add pyproject.toml uv.lock
-            git commit -m "chore: release v$VERSION"
-            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${GITHUB_REF_NAME}"
-          fi
-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-
       - name: Create tag & GitHub release
+        if: steps.version.outputs.release == 'true'
         env:
-          TAG: v${{ steps.release.outputs.version }}
-          SHA: ${{ steps.bump.outputs.sha }}
+          TAG: ${{ steps.version.outputs.tag }}
           GH_TOKEN: ${{ github.token }}
         run: >
           gh release create "$TAG" dist/*
           --repo "$GITHUB_REPOSITORY"
-          --target "$SHA"
+          --target "$GITHUB_SHA"
           --title "$TAG"
           --generate-notes
