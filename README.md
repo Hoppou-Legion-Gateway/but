@@ -15,6 +15,12 @@ A Blender utility built to accelerate workflows.
 
 <br>
 
+## Install
+
+```sh
+uv tool install --python 3.13 but-cli   # bpy only ships wheels for Python 3.13
+```
+
 ## Usage
 
 ```sh
@@ -26,15 +32,13 @@ uv run pytest
 
 # Build
 uv build
-
-# Publish
-uv publish
 ```
 
 ## Releasing
 
-Bump the version and push to `main`. The release workflow publishes
-`v<version>` when that tag doesn't exist yet; other pushes skip releasing.
+Bump the version and push to `main`. When `v<version>` doesn't exist yet, the
+release workflow publishes to [PyPI](https://pypi.org/project/but-cli/) and
+then creates the tag and GitHub release; other pushes skip releasing.
 
 ```sh
 uv version --bump patch   # or minor / major

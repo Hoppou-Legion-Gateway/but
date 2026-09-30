@@ -1,5 +1,5 @@
 [project]
-name = "but"
+name = "but-cli"
 version = "0.1.0"
 description = "A useful cli for Blender"
 readme = "README.md"
@@ -21,6 +21,10 @@ dev = [
 [build-system]
 requires = ["uv_build>=0.12.19,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.uv.build-backend]
+# PyPI name is `but-cli` (`but` is taken); the import package stays `but`.
+module-name = "but"
 
 [tool.pyright]
 venvPath = "."
