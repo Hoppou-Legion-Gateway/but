@@ -24,6 +24,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          # git-cliff needs the full history and existing tags.
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up uv
@@ -49,6 +51,13 @@ jobs:
         if: steps.version.outputs.release == 'true'
         run: uv build
 
+      - name: Generate release notes
+        if: steps.version.outputs.release == 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        # Commits since the previous tag, rendered as $TAG using cliff.toml.
+        run: uvx git-cliff@2.14.2 --unreleased --tag "$TAG" --output "$RUNNER_TEMP/notes.md"
+
       - name: Create tag & GitHub release
         if: steps.version.outputs.release == 'true'
         env:
@@ -59,4 +68,4 @@ jobs:
           --repo "$GITHUB_REPOSITORY"
           --target "$GITHUB_SHA"
           --title "$TAG"
-          --generate-notes
+          --notes-file "$RUNNER_TEMP/notes.md"
