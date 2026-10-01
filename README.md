@@ -16,10 +16,25 @@ A Blender utility built to accelerate workflows.
 
 <br>
 
+## Features
+
+- Empty blender project creation
+
+## Requirements
+
+Ensure that you meet following minimum requirements before installing:
+
+- Python 3.13.\*
+- Blender >= 5.2.2
+- Unity >= 2019.2.1f1
+
+> [!NOTE]
+> Unity is only required to install the Unity package
+
 ## Install
 
 ```sh
-uv tool install --python 3.13 but-cli   # bpy only ships wheels for Python 3.13
+uv tool install --python 3.13 but-cli
 ```
 
 ## Usage
@@ -39,7 +54,7 @@ uv build
 
 Bump the version and push to `main`. When `v<version>` doesn't exist yet, the
 release workflow publishes to [PyPI](https://pypi.org/project/but-cli/) and
-then creates the tag and GitHub release; other pushes skip releasing.
+then creates the tag and GitHub release.
 
 ```sh
 uv version --bump patch   # or minor / major
