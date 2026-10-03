@@ -18,7 +18,6 @@ but = "but:main"
 [dependency-groups]
 dev = [
   "pytest>=9.1.1",
-  "rich>=15.0.0",
 ]
 
 [build-system]
