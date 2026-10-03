@@ -51,6 +51,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "fake-bpy-module-latest" },
     { name = "pytest" },
 ]
 
@@ -63,7 +64,10 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "pytest", specifier = ">=9.1.1" }]
+dev = [
+    { name = "fake-bpy-module-latest", specifier = ">=20261002" },
+    { name = "pytest", specifier = ">=9.1.1" },
+]
 
 [[package]]
 name = "cattrs"
@@ -239,6 +243,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/9c/66/37892a8999d6bbd3f92d691a9701cb720c8ddd6171e16f5148eee6e8cb7f/cython-3.3.0-cp39-abi3-win32.whl", hash = "sha256:90869072e50b7c8904fe1dd7810321ae901fd5637a6eec6646ed9c57f9eb1081", size = 2587733, upload-time = "2026-08-22T05:17:54.547Z" },
     { url = "https://files.pythonhosted.org/packages/19/a2/5f4d305cbd4489d21570e5491ad5c483c478cdab032853e2125c280e3bd5/cython-3.3.0-cp39-abi3-win_arm64.whl", hash = "sha256:dce56c26d388f00a19426371b6926bf2f77c5c03b71d5273e4556c68be98c2dd", size = 2608078, upload-time = "2026-08-22T05:17:56.386Z" },
     { url = "https://files.pythonhosted.org/packages/bf/77/67b0b24e45073a699610e50f00c18474ff9b09ea29ecc95083bdf5e60acd/cython-3.3.0-py3-none-any.whl", hash = "sha256:9b24b5c8cd536946b62086fcafee6d5509d3f549f72d553d2336af87ffbe0da1", size = 1349151, upload-time = "2026-08-22T05:16:36.741Z" },
+]
+
+[[package]]
+name = "fake-bpy-module-latest"
+version = "20261002"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/66/b4/77e1697701cdd570bdd5cb9d14ec1ac786446cee68f6beacc1b1dbd13e58/fake_bpy_module_latest-20261002.tar.gz", hash = "sha256:2100197dd2826a09894d4511ba600f4f9a107713b289eaac70de2a8348c4a640", size = 969380, upload-time = "2026-10-02T11:32:56.633Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fc/86/f50e6c403ed80e8f4c616a655c7493cea8d3dd308388fbbf3123918e2eec/fake_bpy_module_latest-20261002-py3-none-any.whl", hash = "sha256:e043730ae1321de32a001e94724a15cff945d76c004fecfa9c633e622b1c8bb6", size = 1117204, upload-time = "2026-10-02T11:32:54.587Z" },
 ]
 
 [[package]]

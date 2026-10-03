@@ -17,6 +17,7 @@ but = "but:main"
 
 [dependency-groups]
 dev = [
+  "fake-bpy-module-latest>=20261002",
   "pytest>=9.1.1",
 ]
 
