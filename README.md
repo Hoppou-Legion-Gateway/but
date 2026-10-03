@@ -6,11 +6,11 @@ A Blender utility built to accelerate workflows.
 
 <br>
 
-[![Built for Blender](https://badges.hoppou.dev/badge?title=Built%20for&label=Blender&color=E87D0D&icon=blender)](https://www.blender.org/)
-[![Built with Python](https://badges.hoppou.dev/badge?title=Built%20with&label=Python&color=3776AB&icon=python)](https://www.python.org/)
-[![Packaged with UV](https://badges.hoppou.dev/badge?title=Packaged%20with&label=UV&color=DE5FE9&icon=uv)](https://docs.astral.sh/uv/)
-[![Published to PyPI](https://badges.hoppou.dev/badge?title=Published%20to&label=PyPI&color=3775A9&icon=pypi)](https://pypi.org/project/but-cli/)
-[![CI Passing](https://badges.hoppou.dev/ci/Hoppou-Legion-Gateway/but/tests.yml)](https://github.com/Hoppou-Legion-Gateway/but/actions/workflows/tests.yml)
+[![Built for Blender](https://img.shields.io/badge/built%20for-Blender-E87D0D?style=for-the-badge&logo=blender&logoColor=white)](https://www.blender.org/)
+[![Built with Python](https://img.shields.io/badge/built%20with-Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Packaged with uv](https://img.shields.io/badge/packaged%20with-uv-DE5FE9?style=for-the-badge&logo=uv&logoColor=white)](https://docs.astral.sh/uv/)
+[![Published to PyPI](https://img.shields.io/badge/published%20to-PyPI-3775A9?style=for-the-badge&logo=pypi&logoColor=white)](https://pypi.org/project/but-cli/)
+[![CI](https://img.shields.io/github/actions/workflow/status/Hoppou-Legion-Gateway/but/tests.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=CI)](https://github.com/Hoppou-Legion-Gateway/but/actions/workflows/tests.yml)
 
 </div>
 
